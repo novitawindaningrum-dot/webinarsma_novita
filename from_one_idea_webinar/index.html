@@ -1,0 +1,1163 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#B8D5B7">
+<meta name="description" content="Perjalanan berbagi praktik baik oleh Novita Windaningrum dalam mengembangkan media pembelajaran interaktif berbasis EPUB bersama Arasoft dan Direktorat SMA.">
+<title>From One Idea to Global Inspiration | Novita Windaningrum</title>
+<style>
+:root{
+ --sage:#B8D5B7;--sage-deep:#4E7754;--pink:#F4B8CE;--pink-deep:#9E4665;
+ --cream:#FFFDF8;--paper:#F6F4ED;--forest:#1F3826;--ink:#142219;
+ --muted:#283D2F;--gold:#A98448;--line:rgba(31,56,38,.18);
+ --serif:Georgia,"Times New Roman",serif;--sans:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;background:#e9e6dc;height:100%;overflow:hidden}
+body{
+ margin:0;height:100%;background:#e9e6dc;color:var(--ink);font-family:var(--sans);
+ overflow:hidden;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
+}
+::selection{background:var(--pink);color:var(--forest)}
+a{color:inherit}
+
+body:before{
+ content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;
+ background:radial-gradient(ellipse at 50% 15%,#fffdf8 0,#eae7dd 70%,#dcd7cc 100%);
+}
+
+/* TOPBAR */
+.topbar{
+ position:fixed;z-index:950;top:10px;left:50%;transform:translateX(-50%);
+ width:min(96%,1380px);display:flex;align-items:center;justify-content:space-between;
+ padding:7px 16px;border:1px solid rgba(255,255,255,.9);border-radius:999px;
+ background:rgba(255,253,245,.92);backdrop-filter:blur(16px);
+ box-shadow:0 8px 24px rgba(31,56,38,.12);transition:transform .3s ease,opacity .3s ease;
+}
+.brand{font:italic 600 15px var(--serif);color:var(--forest);text-decoration:none;white-space:nowrap;display:flex;align-items:center;gap:8px}
+.brand .badge{font:700 9px var(--sans);letter-spacing:.08em;background:var(--forest);color:white;padding:3px 7px;border-radius:99px;text-transform:uppercase}
+.topbar-actions{display:flex;align-items:center;gap:6px}
+.menu{display:flex;gap:4px;align-items:center}
+.menu a{font-size:11.5px;font-weight:600;text-decoration:none;color:var(--muted);padding:6px 10px;border-radius:30px;transition:.2s}
+.menu a:hover,.menu a.active{background:rgba(244,184,206,.6);color:var(--forest)}
+.top-btn{
+ border:1px solid rgba(31,56,38,.2);background:transparent;color:var(--forest);
+ padding:6px 11px;border-radius:99px;font:700 11px var(--sans);cursor:pointer;
+ display:inline-flex;align-items:center;gap:5px;transition:.2s;
+}
+.top-btn:hover{background:var(--forest);color:white}
+.menu-toggle{display:none;border:0;background:var(--forest);color:white;border-radius:50%;width:34px;height:34px;cursor:pointer}
+
+/* EXPANDED STAGE & BOOK CONTAINER - MAXIMUM VISUAL CANVAS */
+.album-stage{
+ position:fixed;inset:0;display:flex;align-items:center;justify-content:center;
+ padding:clamp(40px,5.2vh,52px) clamp(6px,1vw,14px) clamp(48px,6.2vh,58px);
+}
+.album-book{
+ position:relative;width:min(1560px,98.8vw);height:min(920px,calc(100svh - 96px));
+ min-height:490px;background:var(--cream);border-radius:14px;
+ box-shadow:0 24px 70px rgba(27,45,32,.25),0 4px 14px rgba(27,45,32,.12);
+ overflow:hidden;border:1px solid rgba(255,255,255,.9);perspective:1800px;
+}
+.album-book:before{
+ content:"";position:absolute;z-index:20;top:0;bottom:0;left:14px;width:2px;
+ background:linear-gradient(90deg,#d5cdbb,rgba(255,255,255,.8),#d5cdbb);opacity:.75;pointer-events:none;
+}
+.album-book:after{
+ content:"";position:absolute;z-index:19;top:0;bottom:0;left:0;width:15px;
+ background:linear-gradient(90deg,rgba(207,199,183,.65),rgba(255,255,255,0));pointer-events:none;
+}
+
+/* SECTION SLIDES - NO SCROLL & PROPORTIONAL PADDING */
+.album-book section{
+ display:none;position:absolute;inset:0;height:100%;width:100%;
+ padding:clamp(14px,2.2vh,26px) clamp(20px,2.8vw,48px);
+ overflow-y:auto;overscroll-behavior:contain;align-items:center;
+ scrollbar-width:thin;scrollbar-color:rgba(48,75,57,.25) transparent;
+}
+.album-book section::-webkit-scrollbar{width:5px}
+.album-book section::-webkit-scrollbar-thumb{background:rgba(48,75,57,.25);border-radius:4px}
+.album-book .inner{width:100%;max-width:1460px;margin:auto}
+
+/* TRANSITION MODES: WEBINAR SLIDE (DEFAULT) VS 3D FLIP */
+.album-book.mode-webinar section{
+ opacity:0;transform:translate3d(28px,0,0);
+ transition:opacity .25s ease,transform .25s cubic-bezier(.16,1,.3,1);
+ pointer-events:none;
+}
+.album-book.mode-webinar section.active{
+ display:flex;opacity:1;transform:translate3d(0,0,0);
+ pointer-events:auto;z-index:2;
+}
+.album-book.mode-webinar section.exit-left{
+ display:flex;opacity:0;transform:translate3d(-28px,0,0);z-index:1;
+}
+.album-book.mode-webinar section.exit-right{
+ display:flex;opacity:0;transform:translate3d(28px,0,0);z-index:1;
+}
+
+.album-book.mode-flip section{
+ display:none;backface-visibility:hidden;transform-style:preserve-3d;
+}
+.album-book.mode-flip section.active{
+ display:flex;z-index:2;animation:pageSettle .3s ease both;
+}
+.album-book.mode-flip section.under{display:flex;z-index:1}
+.album-book.mode-flip section.turning-next,.album-book.mode-flip section.turning-prev{
+ display:flex;z-index:4;backface-visibility:hidden;transform-style:preserve-3d;
+ transition:transform .72s cubic-bezier(.65,.02,.25,1),box-shadow .72s ease;
+ box-shadow:0 0 0 transparent;
+}
+.album-book.mode-flip section.turning-next{transform-origin:left center;transform:rotateY(-178deg);box-shadow:-16px 0 24px rgba(38,59,44,.2)}
+.album-book.mode-flip section.turning-prev{transform-origin:right center;transform:rotateY(178deg);box-shadow:16px 0 24px rgba(38,59,44,.2)}
+@keyframes pageSettle{from{opacity:.82}to{opacity:1}}
+
+/* TYPOGRAPHY - HIGH CONTRAST & CLEAR EDITORIAL HIERARCHY */
+.eyebrow{font-size:11px;letter-spacing:.22em;text-transform:uppercase;font-weight:800;color:var(--pink-deep);margin-bottom:10px}
+h1,h2,h3,p{margin-top:0}
+h1,h2,.display{font-family:var(--serif);font-weight:500;letter-spacing:-.045em;color:var(--forest)}
+h1{font-size:clamp(38px,5.4vw,84px);line-height:.95;margin-bottom:14px}
+h2{font-size:clamp(28px,3.8vw,54px);line-height:1.02;margin-bottom:12px}
+h3{font:600 clamp(18px,1.7vw,25px) var(--serif);line-height:1.15;margin-bottom:8px;color:var(--forest)}
+p{font-size:clamp(14px,1.1vw,16.5px);line-height:1.68;color:var(--muted);max-width:68ch;margin-bottom:12px}
+.lead{font-size:clamp(15.5px,1.25vw,19.5px);line-height:1.55;font-weight:500;color:var(--ink);margin-bottom:12px}
+.small{font-size:12.5px;line-height:1.6}
+.accent{color:var(--pink-deep)}
+.sage-text{color:var(--forest);font-weight:600}
+.pill{
+ display:inline-flex;align-items:center;gap:6px;border:1px solid rgba(31,56,38,.25);
+ border-radius:99px;padding:6px 12px;font-size:10.5px;letter-spacing:.08em;
+ text-transform:uppercase;font-weight:800;color:var(--forest);background:rgba(255,255,255,.9);
+ margin-bottom:12px;
+}
+.rule{width:60px;height:3px;background:var(--pink-deep);margin:16px 0;border-radius:2px}
+
+/* ===================================================
+   VISUAL-DOMINANT GRID LAYOUTS (60%-65% VISUAL : 35%-40% TEXT)
+   =================================================== */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:clamp(20px,2.8vw,44px);align-items:center}
+.grid2.visual-heavy-right{grid-template-columns:0.76fr 1.24fr}
+.grid2.visual-heavy-left{grid-template-columns:1.24fr 0.76fr}
+.grid2.wide-left{grid-template-columns:1.15fr .85fr}
+.grid2.wide-right{grid-template-columns:.85fr 1.15fr}
+
+/* ===================================================
+   ENHANCED PHOTO PANELS & SIZING
+   =================================================== */
+.visual{display:flex;align-items:center;justify-content:center;min-width:0;width:100%;position:relative}
+.visual img{
+ display:block;max-width:100%;max-height:68vh;width:auto;height:auto;
+ object-fit:contain;border-radius:12px;
+}
+
+/* Single Hero Photo Panel */
+.visual.photo-panel{
+ padding:12px;background:rgba(255,255,255,.88);border:1px solid rgba(255,255,255,.95);
+ border-radius:18px;box-shadow:0 14px 34px rgba(31,56,38,.14);width:100%;
+}
+.visual.photo-panel img{max-height:66vh;cursor:zoom-in;transition:transform .3s ease}
+.visual.photo-panel:hover img{transform:scale(1.015)}
+.visual.photo-panel:before{
+ content:"";position:absolute;inset:6px -6px -6px 6px;border:1px solid var(--gold);
+ border-radius:18px;z-index:-1;
+}
+
+/* Book Cover 3D Stand (Slide 3 Timun Mas) */
+.book-showcase{
+ display:flex;align-items:center;justify-content:center;padding:10px;width:100%;
+}
+.book-showcase img{
+ max-height:68vh;width:auto;object-fit:contain;border-radius:4px 12px 12px 4px;
+ box-shadow:-8px 14px 32px rgba(0,0,0,.32),0 2px 8px rgba(0,0,0,.15);
+ cursor:zoom-in;transition:transform .3s ease,box-shadow .3s ease;
+}
+.book-showcase img:hover{
+ transform:translateY(-6px) scale(1.02);
+ box-shadow:-12px 22px 42px rgba(0,0,0,.4);
+}
+
+/* ===================================================
+   PHOTO PAIRS (DUO SHOWCASE) - MUCH LARGER
+   =================================================== */
+.photo-pair{
+ display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:stretch;width:100%;
+}
+.photo-card{
+ margin:0;background:#fff;border-radius:14px;padding:8px;
+ box-shadow:0 8px 24px rgba(31,56,38,.12);display:flex;flex-direction:column;
+ border:1px solid rgba(255,255,255,.9);cursor:zoom-in;
+ transition:transform .25s ease,box-shadow .25s ease;
+}
+.photo-card:hover{
+ transform:translateY(-4px);box-shadow:0 16px 36px rgba(31,56,38,.18);
+}
+.photo-card img{
+ width:100%;height:auto;max-height:56vh;object-fit:contain;
+ border-radius:8px;display:block;background:#faf8f3;
+}
+.photo-card figcaption{
+ font-size:11.5px;font-weight:700;color:var(--forest);padding:8px 4px 2px;
+ line-height:1.35;text-align:center;
+}
+
+/* ===================================================
+   GALLERY TRIO (SLIDE 9 KOREA) - WIDE & IMMERSIVE
+   =================================================== */
+.gallery-trio{
+ display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:14px;width:100%;
+}
+.gallery-trio figure{
+ margin:0;background:#fff;border-radius:14px;padding:8px;
+ box-shadow:0 8px 24px rgba(31,56,38,.12);cursor:zoom-in;display:flex;flex-direction:column;
+ border:1px solid rgba(255,255,255,.9);transition:transform .25s ease,box-shadow .25s ease;
+}
+.gallery-trio figure:hover{
+ transform:translateY(-4px);box-shadow:0 16px 32px rgba(31,56,38,.18);
+}
+.gallery-trio img{
+ width:100%;height:auto;max-height:44vh;object-fit:contain;
+ display:block;border-radius:8px;background:#faf8f3;
+}
+.gallery-trio figcaption{
+ font-size:11.5px;font-weight:700;color:var(--forest);padding:8px 4px 2px;
+ text-align:center;line-height:1.35;
+}
+
+/* ===================================================
+   PORTFOLIO COVERS - PROMINENT & TALL
+   =================================================== */
+.covers{
+ display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(12px,2vw,24px);
+ margin-top:18px;width:100%;
+}
+.cover{border:0;background:transparent;text-align:left;padding:0;cursor:zoom-in;color:var(--ink);min-width:0}
+.cover .cover-art{
+ height:clamp(220px,36vh,380px);display:flex;align-items:center;justify-content:center;
+ background:#f1efe7;border-radius:14px;padding:12px;box-shadow:0 10px 24px rgba(31,56,38,.12);
+ transition:transform .3s,box-shadow .3s;border:1px solid rgba(255,255,255,.9);
+}
+.cover:hover .cover-art{
+ transform:translateY(-8px) scale(1.02);box-shadow:0 20px 38px rgba(31,56,38,.2);
+}
+.cover img{
+ max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;
+ filter:drop-shadow(0 10px 14px rgba(0,0,0,.22));
+}
+.cover strong{display:block;font:600 clamp(13px,1.2vw,17px)/1.2 var(--serif);margin:10px 0 4px;color:var(--forest)}
+.cover small{font-size:11px;font-weight:600;color:var(--muted)}
+
+/* THEMED SECTIONS */
+.hero{background:var(--sage);overflow:hidden}
+.hero:before,.closing:before{content:"";position:absolute;width:44vw;height:44vw;border:1px solid rgba(255,255,255,.45);border-radius:50%;right:-10vw;top:10%;z-index:-1}
+.hero:after{content:"";position:absolute;width:26vw;height:26vw;border:1px solid rgba(255,255,255,.35);border-radius:50%;right:-1vw;top:22%;z-index:-1}
+.hero .portrait{max-height:68vh;max-width:100%;width:auto;object-fit:contain;border-radius:4px 4px 40% 40%;box-shadow:16px 16px 0 var(--pink);border:4px solid #fff}
+.hero .sub{font:italic clamp(16px,1.6vw,22px) var(--serif);color:var(--forest);font-weight:600;max-width:540px}
+.scroll-cue{display:inline-flex;align-items:center;gap:10px;margin-top:16px;text-decoration:none;color:var(--forest);font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:800;cursor:pointer}
+.scroll-cue span{display:grid;place-items:center;width:32px;height:32px;border:1px solid rgba(31,56,38,.4);border-radius:50%;background:#fff}
+
+.soft{background:var(--paper)}
+.sage{background:var(--sage)}
+.pink-bg{background:var(--pink)}
+.dark{background:var(--forest);color:var(--cream)}
+.dark h1,.dark h2,.dark h3{color:#fff}
+.dark p{color:#e7eee6}
+.dark .lead{color:#ffffff}
+.dark .eyebrow{color:var(--pink)}
+.dark .pill{background:rgba(255,255,255,.15);border-color:rgba(255,255,255,.3);color:#fff}
+
+.quote{font:italic clamp(19px,2vw,32px)/1.25 var(--serif);color:var(--forest);margin-top:14px}
+.dark .quote{color:var(--pink)}
+
+.timeline{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:16px}
+.timeline span{padding:8px 14px;border-radius:99px;background:rgba(255,255,255,.9);color:var(--forest);font-size:12px;font-weight:800;border:1px solid rgba(31,56,38,.15)}
+.timeline b{color:var(--pink-deep)}
+.award-number{font:600 clamp(80px,13vw,170px)/.85 var(--serif);color:var(--pink);letter-spacing:-.08em}
+
+.mapline{display:flex;gap:4px;align-items:center;margin-top:18px;flex-wrap:wrap}
+.mapline span{font:italic 600 clamp(16px,1.8vw,22px) var(--serif);padding:6px 10px;background:rgba(255,255,255,.8);border-radius:6px;color:var(--forest)}
+.mapline i{width:18px;height:2px;background:var(--pink-deep)}
+
+/* SLIDE 10 REFLECTION CARDS */
+.reflection-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+.reflection-card{
+ background:rgba(255,255,255,.85);border:1px solid rgba(255,255,255,.95);border-radius:12px;
+ padding:12px 16px;box-shadow:0 4px 14px rgba(31,56,38,.07);
+}
+.reflection-card .ref-badge{
+ font-size:9.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;
+ color:var(--pink-deep);margin-bottom:4px;
+}
+.reflection-card h3{font-size:clamp(15px,1.35vw,19px);margin-bottom:6px;color:var(--forest)}
+.reflection-card p{font-size:clamp(12.5px,1vw,14.5px);line-height:1.55;color:var(--muted);margin-bottom:0}
+
+/* SLIDE 11 CENTERED SHOWCASE (FIRE RESCUE MISSION) */
+.showcase-center{
+ text-align:center;max-width:920px;margin:auto;display:flex;flex-direction:column;align-items:center;
+}
+.demo-center-visual{
+ display:flex;justify-content:center;align-items:center;margin:10px auto;width:100%;
+}
+.demo-center-visual img{
+ height:clamp(220px, 46vh, 440px);max-width:100%;width:auto;object-fit:contain;
+ border-radius:6px 14px 14px 6px;
+ box-shadow:-8px 14px 34px rgba(0,0,0,.45), 0 2px 8px rgba(0,0,0,.2);
+ cursor:zoom-in;transition:transform .3s ease,box-shadow .3s ease;
+}
+.demo-center-visual img:hover{
+ transform:translateY(-6px) scale(1.02);
+ box-shadow:-12px 22px 44px rgba(0,0,0,.55);
+}
+.feature-tags-center{
+ display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:12px;
+}
+.feature-tags-center span{
+ background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);
+ color:#f0f5ee;padding:6px 14px;border-radius:99px;font-size:12px;font-weight:600;
+}
+
+.closing{background:var(--pink);overflow:hidden}
+.closing .portrait{max-height:68vh;max-width:100%;width:auto;object-fit:contain;border-radius:18px;border:4px solid #fff;box-shadow:14px 14px 0 var(--sage);cursor:zoom-in;transition:transform .3s ease}.closing .portrait:hover{transform:scale(1.02)}
+
+/* PARTNER LOGOS PILL (SLIDE 0 & SLIDE 12) - OPTICAL BALANCED */
+.partner-pill{
+ display:inline-flex;align-items:center;gap:14px;background:rgba(255,255,255,.94);
+ border:1px solid rgba(255,255,255,.98);padding:7px 16px;border-radius:999px;
+ box-shadow:0 4px 16px rgba(31,56,38,.09);margin-bottom:14px;backdrop-filter:blur(10px);
+ max-width:100%;flex-wrap:wrap;
+}
+.partner-pill img{
+ display:block;width:auto;object-fit:contain;
+ filter:drop-shadow(0 1px 2px rgba(0,0,0,.06));transition:transform .2s ease;
+}
+.partner-pill img:hover{transform:scale(1.06)}
+.partner-pill .logo-kemendikdasmen{height:30px;max-height:30px}
+.partner-pill .logo-sma{height:34px;max-height:34px}
+.partner-pill .logo-mutu{height:30px;max-height:30px}
+.partner-pill .logo-arasoft{height:24px;max-height:24px}
+.partner-pill .logo-namo{height:18px;max-height:18px}
+.partner-divider{
+ width:1px;height:24px;background:rgba(31,56,38,.22);margin:0 3px;
+}
+
+/* CONTROLS BAR */
+.album-controls{
+ position:fixed;z-index:960;left:50%;bottom:10px;transform:translateX(-50%);
+ display:flex;align-items:center;gap:10px;padding:6px 14px;border-radius:999px;
+ background:rgba(255,253,240,.95);border:1px solid rgba(255,255,255,.95);
+ box-shadow:0 8px 24px rgba(31,56,38,.16);backdrop-filter:blur(14px);
+ transition:transform .3s ease,opacity .3s ease;
+}
+.album-controls button{
+ border:0;border-radius:999px;background:var(--forest);color:white;padding:8px 14px;
+ font:700 11px var(--sans);letter-spacing:.06em;text-transform:uppercase;cursor:pointer;
+ transition:.2s;display:inline-flex;align-items:center;gap:6px;
+}
+.album-controls button:hover{background:var(--pink-deep);transform:translateY(-1px)}
+.album-controls button:disabled{opacity:.35;cursor:not-allowed;transform:none}
+.btn-accent{background:var(--pink-deep)!important}
+.btn-accent:hover{background:var(--forest)!important}
+.album-counter{min-width:80px;text-align:center;color:var(--forest);font:italic 600 14px var(--serif)}
+
+.album-progress{position:fixed;z-index:960;bottom:0;left:0;height:4px;background:rgba(255,255,255,.7);width:100%}
+.album-progress span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--sage-deep),var(--pink-deep));transition:width .3s}
+
+.album-hint{
+ position:fixed;z-index:940;bottom:58px;left:50%;transform:translateX(-50%);
+ color:#384f3e;background:rgba(255,253,240,.9);padding:4px 12px;border-radius:99px;
+ font-size:10.5px;font-weight:600;letter-spacing:.05em;border:1px solid rgba(255,255,255,.8);
+ box-shadow:0 2px 8px rgba(0,0,0,.06);transition:opacity .3s;
+}
+
+/* CLEAN / PRESENTER MODE */
+body.clean-mode .topbar{transform:translate(-50%,-130%);opacity:0;pointer-events:none}
+body.clean-mode .album-controls{transform:translate(-50%,150%);opacity:0;pointer-events:none}
+body.clean-mode .album-hint{opacity:0;pointer-events:none}
+body.clean-mode .album-stage{padding-bottom:14px}
+.clean-pill{
+ display:none;position:fixed;bottom:12px;right:18px;z-index:970;
+ background:rgba(31,56,38,.88);color:white;padding:7px 14px;border-radius:99px;
+ font-size:11px;font-weight:700;backdrop-filter:blur(8px);cursor:pointer;
+ align-items:center;gap:6px;box-shadow:0 4px 14px rgba(0,0,0,.2);
+ border:1px solid rgba(255,255,255,.3);transition:.2s;
+}
+.clean-pill:hover{background:var(--pink-deep)}
+body.clean-mode .clean-pill{display:flex}
+
+/* SLIDE OVERVIEW MODAL */
+.overview-modal{
+ position:fixed;inset:0;z-index:1300;background:rgba(18,32,22,.82);
+ backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;
+ padding:24px;opacity:0;transition:opacity .25s ease;
+}
+.overview-modal.open{display:flex;opacity:1}
+.overview-inner{
+ width:min(1100px,96vw);max-height:90vh;background:var(--cream);
+ border-radius:18px;padding:24px;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.4);
+ border:1px solid rgba(255,255,255,.9);display:flex;flex-direction:column;
+}
+.overview-header{
+ display:flex;align-items:center;justify-content:space-between;padding-bottom:16px;
+ border-bottom:1px solid var(--line);margin-bottom:18px;
+}
+.overview-title{font:600 20px var(--serif);color:var(--forest);display:flex;align-items:center;gap:10px}
+.overview-close{
+ border:1px solid rgba(31,56,38,.2);background:transparent;padding:6px 14px;
+ border-radius:99px;font:700 12px var(--sans);color:var(--forest);cursor:pointer;
+}
+.overview-close:hover{background:var(--forest);color:white}
+.overview-grid{
+ display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px;
+}
+.overview-card{
+ border:1px solid rgba(31,56,38,.14);background:#fff;border-radius:12px;padding:12px 14px;
+ cursor:pointer;text-align:left;transition:transform .2s,border-color .2s,box-shadow .2s;
+ display:flex;flex-direction:column;gap:6px;
+}
+.overview-card:hover{transform:translateY(-3px);border-color:var(--pink-deep);box-shadow:0 8px 18px rgba(31,56,38,.12)}
+.overview-card.active-card{border:2px solid var(--forest);background:rgba(184,213,183,.25)}
+.overview-card .card-num{font-size:10px;font-weight:800;letter-spacing:.1em;color:var(--pink-deep);text-transform:uppercase}
+.overview-card strong{font:600 14px var(--serif);color:var(--forest);line-height:1.2}
+.overview-card span{font-size:11px;color:var(--muted);line-height:1.4}
+
+/* HELP SHORTCUTS MODAL */
+.help-modal{
+ position:fixed;inset:0;z-index:1350;background:rgba(18,32,22,.82);
+ backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;padding:20px;
+}
+.help-modal.open{display:flex}
+.help-inner{
+ width:min(500px,92vw);background:#fff;border-radius:16px;padding:24px;
+ box-shadow:0 20px 50px rgba(0,0,0,.35);
+}
+.help-inner h3{margin-bottom:14px;color:var(--forest)}
+.shortcut-list{display:flex;flex-direction:column;gap:10px;font-size:12.5px;color:var(--muted)}
+.shortcut-item{display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #f0f0f0;padding-bottom:6px}
+kbd{background:#eee;border:1px solid #ccc;border-radius:4px;padding:3px 7px;font:700 11px monospace;color:#222}
+
+/* LIGHTBOX */
+.lightbox{position:fixed;inset:0;z-index:1400;background:rgba(18,32,22,.88);display:none;align-items:center;justify-content:center;padding:3vw;cursor:zoom-out}
+.lightbox.open{display:flex}
+.lightbox img{max-width:92vw;max-height:90vh;width:auto;height:auto;object-fit:contain;background:#fff;padding:8px;border-radius:8px;box-shadow:0 18px 45px rgba(0,0,0,.5)}
+.lightbox button{position:absolute;top:20px;right:24px;border:1px solid rgba(255,255,255,.5);background:rgba(255,255,255,.2);color:white;border-radius:50%;width:42px;height:42px;font-size:24px;cursor:pointer}
+
+/* RESPONSIVE */
+@media(max-width:760px){
+ .album-stage{padding:54px 6px 74px}
+ .album-book{width:100%;height:calc(100svh - 140px);min-height:420px}
+ .album-book section{padding:18px 14px}
+ .grid2,.grid2.visual-heavy-right,.grid2.visual-heavy-left,.grid2.wide-left,.grid2.wide-right{grid-template-columns:1fr;gap:16px}
+ .photo-pair{grid-template-columns:1fr;gap:10px}
+ .gallery-trio{grid-template-columns:1fr;gap:10px}
+ .covers{grid-template-columns:repeat(2,1fr)}
+ .reflection-grid{grid-template-columns:1fr}
+ .album-controls{gap:6px;padding:5px 10px;max-width:96vw}
+ .album-controls button{padding:7px 10px;font-size:9px}
+ .partner-pill{gap:8px;padding:5px 10px;margin-bottom:10px}
+ .partner-pill .logo-kemendikdasmen{height:20px;max-height:20px}
+ .partner-pill .logo-sma{height:22px;max-height:22px}
+ .partner-pill .logo-mutu{height:20px;max-height:20px}
+ .partner-pill .logo-arasoft{height:16px;max-height:16px}
+ .partner-pill .logo-namo{height:13px;max-height:13px}
+ .partner-divider{height:16px}
+ .menu{display:none}
+ .menu.open{display:flex;position:absolute;top:50px;left:0;right:0;background:#fff;border-radius:14px;padding:12px;flex-direction:column}
+ .menu-toggle{display:block}
+}
+@media(prefers-reduced-motion:reduce){
+ *{animation:none!important;transition:none!important}
+}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<header class="topbar">
+ <a class="brand" href="#opening" id="brandLink">
+  <span>Novita Windaningrum</span>
+  <span class="badge">Interactive Portfolio</span>
+ </a>
+ <div class="topbar-actions">
+  <nav class="menu" id="menu" aria-label="Navigasi Halaman">
+   <a href="#beginning">Mulai</a>
+   <a href="#firstwork">Karya 1</a>
+   <a href="#sharing">IHT</a>
+   <a href="#portfolio">Portofolio</a>
+   <a href="#korea">Korea</a>
+   <a href="#reflection">Refleksi</a>
+   <a href="#demo">Karya 2</a>
+  </nav>
+  <button class="top-btn" id="openOverviewTop" type="button" title="Buka Daftar Semua Slide (Tekan G)">⊞ Semua Slide</button>
+  <button class="top-btn" id="helpBtn" type="button" title="Tombol Pintas Keyboard (Tekan ?)">?</button>
+  <button class="menu-toggle" id="menuToggle" aria-label="Menu navigasi">☰</button>
+ </div>
+</header>
+
+<!-- MAIN STAGE -->
+<main class="album-stage">
+<div class="album-book mode-webinar" id="albumBook">
+
+<!-- SLIDE 0: HERO / OPENING -->
+<section class="hero active" id="opening">
+ <div class="inner grid2 wide-left">
+  <div class="hero-copy">
+   <div class="partner-pill">
+    <img class="logo-kemendikdasmen" src="assets/photos/logo-kemendikdasmen.png" alt="Logo Kemendikdasmen" title="Kementerian Pendidikan Dasar dan Menengah">
+    <img class="logo-sma" src="assets/photos/logo-SMA.png" alt="Logo Direktorat SMA" title="Direktorat SMA">
+    <img class="logo-mutu" src="assets/photos/logo-pendidikanbermutu.png" alt="Logo Pendidikan Bermutu" title="Pendidikan Bermutu untuk Semua">
+    <span class="partner-divider"></span>
+    <img class="logo-arasoft" src="assets/photos/logo arasoft1.png" alt="Logo Arasoft" title="Arasoft">
+    <img class="logo-namo" src="assets/photos/namo logo.png" alt="Logo Namo Author" title="Namo Author">
+   </div>
+   <div class="eyebrow">Sharing Practice · Digital Storytelling</div>
+   <h1>From One Idea<br><span class="accent">to Global</span><br>Inspiration</h1>
+   <p class="sub">A Teacher's Journey in Creating Interactive Digital Learning Media</p>
+   <div class="rule"></div>
+   <h3>Novita Windaningrum, S.Pd.</h3>
+   <p class="small sage-text">SMA Taruna Muhammadiyah Gunungpring</p>
+   <a class="scroll-cue" href="#beginning" data-next-page><span>→</span> Buka Presentasi</a>
+  </div>
+  <div class="visual">
+   <img class="portrait" src="assets/photos/portrait-novita.jpeg" alt="Portrait Novita Windaningrum" data-zoom title="Klik untuk memperbesar">
+  </div>
+ </div>
+</section>
+
+<!-- SLIDE 1: THE BEGINNING -->
+<section class="soft" id="beginning">
+ <div class="inner grid2 visual-heavy-right">
+  <div>
+   <div class="eyebrow">01 · The Beginning</div>
+   <h2>A Small Beginning</h2>
+   <span class="pill">Semarang, Indonesia</span>
+   <div class="rule"></div>
+   <h3>My First Encounter with EPUB</h3>
+   <p class="lead">Pelatihan media pembelajaran interaktif berbasis EPUB bersama Arasoft dan Direktorat SMA di Semarang menjadi pintu pertama perjalanan ini.</p>
+   <p>“Saya datang sebagai guru yang ingin belajar sesuatu yang benar-benar baru.” Di tempat inilah saya pertama kali mengenal potensi besar format EPUB 3 dan Namo Author.</p>
+  </div>
+  <div class="photo-pair">
+   <figure class="photo-card" data-zoom>
+    <img src="assets/photos/training-semarang.jpg" alt="Dokumentasi pelatihan di Semarang">
+    <figcaption>Pelatihan EPUB Arasoft & DirSMA di Semarang</figcaption>
+   </figure>
+   <figure class="photo-card" data-zoom>
+    <img src="assets/photos/training-group-1.jpg" alt="Dokumentasi peserta pelatihan">
+    <figcaption>Para Pendidik Peserta Pelatihan</figcaption>
+   </figure>
+  </div>
+ </div>
+</section>
+
+<!-- SLIDE 2: DISCOVERING POSSIBILITIES -->
+<section class="pink-bg" id="discovery">
+ <div class="inner grid2 visual-heavy-right">
+  <div>
+   <div class="eyebrow">02 · Discovering Possibilities</div>
+   <h2>Beyond a Digital Book</h2>
+   <p class="lead">Melalui Namo Author, saya mulai melihat EPUB bukan sekadar teks digital statis, melainkan kanvas interaktif yang memadukan visual, audio, video, dan evaluasi langsung.</p>
+   <div class="rule"></div>
+   <span class="pill">Digital Storytelling</span> <span class="pill">Multimedia</span> <span class="pill">Interactive Learning</span>
+   <p class="quote">“Dari mengenal, kemudian muncul keberanian untuk mencoba hal-hal baru.”</p>
+  </div>
+  <div class="visual photo-panel">
+   <img src="assets/photos/iht-epub-screen.jpg" alt="Koleksi EPUB pada aplikasi PintuARA" data-zoom title="Klik untuk memperbesar">
+  </div>
+ </div>
+</section>
+
+<!-- SLIDE 3: FIRST MASTERPIECE -->
+<section id="firstwork">
+ <div class="inner grid2 visual-heavy-right">
+  <div>
+   <div class="eyebrow">03 · The First Creation</div>
+   <h2>My First Masterpiece</h2>
+   <h3>Magical Storybook: Timun Mas</h3>
+   <p class="lead">Media pembelajaran Bahasa Inggris untuk materi <b>Narrative Text</b>, diadaptasi dari cerita rakyat nusantara agar lebih dekat dan hidup bagi siswa.</p>
+   <p>Karya pertama ini menjadi wujud nyata: ide sederhana yang dieksekusi dengan ketekunan menghasilkan media yang memikat anak didik.</p>
+   <span class="pill">My First Interactive EPUB</span>
+  </div>
+  <div class="visual book-showcase">
+   <img src="assets/covers/timun-mas.jpeg" alt="Sampul asli Magical Storybook Timun Mas" data-zoom title="Klik untuk memperbesar">
+  </div>
+ </div>
+</section>
+
+<!-- SLIDE 4: ACHIEVEMENT -->
+<section class="dark" id="achievement">
+ <div class="inner grid2 visual-heavy-right">
+  <div>
+   <div class="eyebrow">04 · Recognition</div>
+   <h2>The First Achievement</h2>
+   <div class="award-number">1<sup style="font-size:.32em;letter-spacing:0">st</sup></div>
+   <h3>First Place Award</h3>
+   <p class="lead">Meraih Juara 1 dalam pelatihan media pembelajaran interaktif berbasis EPUB yang diselenggarakan di Semarang.</p>
+   <p>Sebuah kehormatan sekaligus suntikan semangat besar bahwa karya seorang guru dari daerah mampu bersaing dan menginspirasi.</p>
+  </div>
+  <div class="visual photo-panel">
+   <img src="assets/photos/award-stage.jpg" alt="Dokumentasi penyerahan penghargaan" data-zoom title="Klik untuk memperbesar">
+  </div>
+ </div>
+</section>
+
+<!-- SLIDE 5: SHARING / IHT -->
+<section class="sage" id="sharing">
+ <div class="inner grid2 visual-heavy-right">
+  <div>
+   <div class="eyebrow">05 · Sharing the Inspiration</div>
+   <h2>Sharing What I Had Created</h2>
+   <span class="pill">In-House Training di Sekolah</span>
+   <p class="lead" style="margin-top:16px">Setelah pencapaian di Semarang, sekolah menginisiasi In-House Training. Saya berkesempatan memperkenalkan ekosistem Arasoft dan mendemonstrasikan karya EPUB kepada rekan-rekan pendidik.</p>
+   <p class="quote">“Prestasi menjadi berlipat maknanya ketika ilmu dan inspirasi dibagikan ke lingkungan sekitar.”</p>
+  </div>
+  <div class="visual photo-panel">
+   <img src="assets/photos/iht-presenting.jpg" alt="Novita berbagi dalam kegiatan In-House Training" data-zoom title="Klik untuk memperbesar">
+  </div>
+ </div>
+</section>
+
+<!-- SLIDE 6: SIKOLA MASTERCLASS -->
+<section class="sage" id="sikola">
+ <div class="inner grid2 visual-heavy-right">
+  <div>
+   <div class="eyebrow">06 · Keep Growing</div>
+   <h2>Beyond the First Creation</h2>
+   <h3>SIKOLA Masterclass</h3>
+   <p class="lead">Proses belajar tidak berhenti di karya pertama. Keikutsertaan dalam SIKOLA Masterclass mendorong saya merancang variasi materi ajar yang lebih menantang.</p>
+   <p>Lahir 3 karya lanjutan: <i>Fire Rescue Mission</i>, <i>Echoes of Indonesia Museum</i>, dan <i>Guru Kreatif, Pembelajaran Interaktif</i>.</p>
+   <div class="timeline">
+    <span>Karya Pertama</span><b>→</b><span>SIKOLA Masterclass</span><b>→</b><span>Portofolio Lanjutan</span>
+   </div>
+  </div>
+  <div class="photo-pair">
+   <figure class="photo-card" data-zoom>
+    <img src="assets/photos/training-group-2.jpg" alt="Dokumentasi kegiatan pengembangan">
+    <figcaption>Sesi Kolaborasi & Pembuatan Media</figcaption>
+   </figure>
+   <figure class="photo-card" data-zoom>
+    <img src="assets/photos/training-group-1.jpg" alt="Dokumentasi kelompok Masterclass">
+    <figcaption>Saya dan guru Kimia SMA TarunaMu berhasil masuk Sikola Masterclass</figcaption>
+   </figure>
+  </div>
+ </div>
+</section>
+
+<!-- SLIDE 7: PORTFOLIO -->
+<section class="soft" id="portfolio">
+ <div class="inner">
+  <div class="eyebrow">07 · Creative Portfolio</div>
+  <h2>Four Works, One Journey</h2>
+  <p class="lead">Empat karya interaktif yang merangkum jejak belajar, eksplorasi kurikulum, dan keberanian berinovasi:</p>
+  <div class="covers">
+   <button class="cover" data-cover type="button">
+    <span class="cover-art"><img src="assets/covers/timun-mas.jpeg" alt="Sampul Timun Mas"></span>
+    <strong>01 · Timun Mas</strong>
+    <small>Narrative Text · Juara 1</small>
+   </button>
+   <button class="cover" data-cover type="button">
+    <span class="cover-art"><img src="assets/covers/fire-rescue.jpeg" alt="Sampul Fire Rescue Mission"></span>
+    <strong>02 · Fire Rescue Mission</strong>
+    <small>Procedure Text & Games</small>
+   </button>
+   <button class="cover" data-cover type="button">
+    <span class="cover-art"><img src="assets/covers/echoes-indonesia.jpeg" alt="Sampul Echoes of Indonesia Museum"></span>
+    <strong>03 · Echoes of Indonesia</strong>
+    <small>Historical Recount Text</small>
+   </button>
+   <button class="cover" data-cover type="button">
+    <span class="cover-art"><img src="assets/covers/guru-kreatif.jpeg" alt="Sampul Guru Kreatif"></span>
+    <strong>04 · Guru Kreatif</strong>
+    <small>Interactive Learning Guide</small>
+   </button>
+  </div>
+  <p class="small" style="margin-top:16px;color:var(--muted)">Klik sampul untuk melihat detail. Seluruh fitur interaktif buku akan didemonstrasikan langsung melalui PintuARA.</p>
+ </div>
+</section>
+
+<!-- SLIDE 8: SOUTH KOREA STUDY VISIT -->
+<section class="pink-bg" id="korea">
+ <div class="inner grid2 visual-heavy-right">
+  <div>
+   <div class="eyebrow">08 · Beyond Borders</div>
+   <h2>A Journey to South Korea</h2>
+   <span class="pill">25–31 Oktober 2026</span>
+   <p class="lead" style="margin-top:14px">Terpilih sebagai salah satu dari <b>lima pendidik terbaik</b> dalam SIKOLA Masterclass, mengantarkan saya pada kesempatan studi banding ke Korea Selatan.</p>
+   <p>Sebuah perjalanan berharga untuk melihat langsung bagaimana teknologi dan pedagogi berpadu di ruang-ruang kelas dunia.</p>
+   <div class="mapline">
+    <span>Jinju</span><i></i><span>Gyeongju</span><i></i><span>Ulsan</span><i></i><span>Seoul</span>
+   </div>
+  </div>
+  <div class="photo-pair">
+   <figure class="photo-card" data-zoom>
+    <img src="assets/photos/delegation-1.jpg" alt="Keberangkatan delegasi pendidik Indonesia menuju Korea Selatan">
+    <figcaption>Keberangkatan Delegasi Indonesia Menuju Korea Selatan</figcaption>
+   </figure>
+   <figure class="photo-card" data-zoom>
+    <img src="assets/photos/jinju-welcome-1.jpg" alt="Penyambutan delegasi Indonesia di Jinju">
+    <figcaption>Penyambutan Delegasi Setibanya di Jinju City</figcaption>
+   </figure>
+  </div>
+ </div>
+</section>
+
+<!-- SLIDE 9: LEARNING BEYOND BORDERS -->
+<section class="soft" id="learning">
+ <div class="inner">
+  <div class="eyebrow">09 · Learning Beyond Borders</div>
+  <h2>New Perspectives, New Inspiration</h2>
+  <p class="lead">Observasi langsung ke <b>Ulsan Foreign Language High School</b> dan <b>Nammok Elementary School</b>, serta sesi bersama <b>Arasoft</b> dan <b>Chunjae Education</b>, membuka wawasan baru tentang integrasi teknologi kelas dunia.</p>
+  <div class="gallery-trio">
+   <figure data-zoom>
+    <img src="assets/photos/korea-visit-1.jpg" alt="Kunjungan ke Ulsan Foreign Language High School">
+    <figcaption>Ulsan Foreign Language High School</figcaption>
+   </figure>
+   <figure data-zoom>
+    <img src="assets/photos/korea-visit-2.jpg" alt="Observasi pembelajaran kontekstual di Nammok Elementary School">
+    <figcaption>Observasi Pembelajaran Kontekstual di Nammok Elementary School</figcaption>
+   </figure>
+   <figure data-zoom>
+    <img src="assets/photos/jinju-welcome-2.jpg" alt="Kunjungan delegasi ke Kantor Arasoft">
+    <figcaption>Kunjungan ke Kantor Arasoft</figcaption>
+   </figure>
+  </div>
+  <p class="quote" style="margin:20px 0 0">“Learning does not stop at borders.”</p>
+ </div>
+</section>
+
+<!-- SLIDE 10: WHAT I BRING BACK (REFLEKSI GURU) -->
+<section class="pink-bg" id="reflection">
+ <div class="inner">
+  <div class="eyebrow">10 · Bringing Inspiration Home</div>
+  <h2>What I Bring Back</h2>
+  <p class="lead">Studi banding bermakna bukan tentang megahnya tempat yang dikunjungi, melainkan gagasan nyata yang dapat kita adaptasi di sekolah masing-masing:</p>
+  
+  <div class="reflection-grid">
+   <div class="reflection-card">
+    <div class="ref-badge">Pilar 1 · Teknologi</div>
+    <h3>Technology with Purpose</h3>
+    <p>Pengalaman mengenal <b>Kamibot</b>, coding, dan media digital menegaskan bahwa teknologi harus bermakna dan berakar kuat pada tujuan pembelajaran.</p>
+   </div>
+   <div class="reflection-card">
+    <div class="ref-badge">Pilar 2 · Metode</div>
+    <h3>Learning by Doing</h3>
+    <p>Praktik di <b>Nammok Elementary School</b> menginspirasi pentingnya ruang gerak: murid aktif berdiskusi, merancang proyek, dan belajar dari lingkungan nyata.</p>
+   </div>
+   <div class="reflection-card">
+    <div class="ref-badge">Pilar 3 · Karakter</div>
+    <h3>Character & Independence</h3>
+    <p>Observasi di <b>Ulsan Foreign Language High School</b> menunjukkan harmoni antara literasi bahasa, kemandirian siswa, dan budaya disiplin positif.</p>
+   </div>
+   <div class="reflection-card">
+    <div class="ref-badge">Pilar 4 · Ekosistem</div>
+    <h3>Beyond the Classroom</h3>
+    <p>Kunjungan ke <b>National Museum of Korea</b> dan <b>Starfield Library</b> membuka cara pandang baru tentang perpustakaan dan ruang publik sebagai pusat belajar.</p>
+   </div>
+  </div>
+
+  <p class="quote" style="margin:20px 0 0;font-size:clamp(17px,1.9vw,26px)">“The most valuable journey is the one that changes the way we see learning.”</p>
+ </div>
+</section>
+
+<!-- SLIDE 11: FROM STORY TO EXPERIENCE -->
+<section class="dark" id="demo">
+ <div class="inner showcase-center">
+  <div class="eyebrow" style="color:var(--pink)">11 · Interactive Experience</div>
+  <h2>From Story to Experience</h2>
+  <p class="quote" style="color:var(--pink);margin:4px auto 10px">“Let's experience it together.”</p>
+  <p class="lead" style="max-width:740px;margin:0 auto 16px;color:#eef4ec">
+   Wujud nyata ide dan proses belajar: media pembelajaran interaktif <b>Fire Rescue Mission</b> yang memadukan visual memikat, materi <i>Procedure Text</i>, audio narasi, dan simulasi interaktif.
+  </p>
+
+  <div class="demo-center-visual">
+   <img src="assets/covers/fire-rescue.jpeg" alt="Sampul Fire Rescue Mission" data-zoom title="Klik untuk memperbesar">
+  </div>
+
+  <div class="feature-tags-center">
+   <span>🎧 Audio Narasi & SFX</span>
+   <span>📖 Procedure Text: Fire Extinguisher</span>
+   <span>🎮 Mini-Game & Evaluasi Mandiri</span>
+  </div>
+ </div>
+</section>
+
+<!-- SLIDE 12: CLOSING & INSPIRATION -->
+<section class="closing" id="closing">
+ <div class="inner grid2 wide-left">
+  <div>
+   <div class="eyebrow">The Final Chapter</div>
+   <h2>Every Teacher<br>Can Create.</h2>
+   <p class="quote">“You don't have to be an expert to begin. You just have to be willing to learn.”</p>
+   <p class="lead" style="margin-top:14px">Jangan pernah ragu memulai dari hal kecil. Mari terus belajar, bereksplorasi, berkarya, dan saling menginspirasi demi kemajuan anak didik kita.</p>
+   <div class="rule"></div>
+   <h3>Terima Kasih · Thank You · 감사합니다 <span style="font-size:0.75em;font-style:italic;font-weight:600;opacity:0.85">(Gamsahamnida)</span></h3>
+   <p class="small" style="font-weight:600;color:var(--forest)">
+    Novita Windaningrum, S.Pd.<br>
+    SMA Taruna Muhammadiyah Gunungpring
+   </p>
+   <div class="partner-pill" style="margin-top:14px">
+    <img class="logo-kemendikdasmen" src="assets/photos/logo-kemendikdasmen.png" alt="Logo Kemendikdasmen" title="Kementerian Pendidikan Dasar dan Menengah">
+    <img class="logo-sma" src="assets/photos/logo-SMA.png" alt="Logo Direktorat SMA" title="Direktorat SMA">
+    <img class="logo-mutu" src="assets/photos/logo-pendidikanbermutu.png" alt="Logo Pendidikan Bermutu" title="Pendidikan Bermutu untuk Semua">
+    <span class="partner-divider"></span>
+    <img class="logo-arasoft" src="assets/photos/logo arasoft1.png" alt="Logo Arasoft" title="Arasoft">
+    <img class="logo-namo" src="assets/photos/namo logo.png" alt="Logo Namo Author" title="Namo Author">
+   </div>
+  </div>
+  <div class="visual">
+   <img class="portrait" src="assets/photos/novita-hanbok.jpg" alt="Portrait Novita Windaningrum" data-zoom title="Klik untuk memperbesar">
+  </div>
+ </div>
+</section>
+
+</div>
+</main>
+
+<!-- ALBUM HINT -->
+<div class="album-hint" id="albumHint">Gunakan tombol panah keyboard (← / →), tombol Next/Prev, atau klik “Semua Slide”</div>
+
+<!-- ALBUM CONTROLS -->
+<div class="album-controls" aria-label="Kontrol Presentasi">
+ <button id="prevPage" type="button" disabled title="Halaman sebelumnya (Panah Kiri)">← Prev</button>
+ <div class="album-counter" id="albumCounter">01 / 13</div>
+ <button id="nextPage" type="button" title="Halaman berikutnya (Panah Kanan / Spasi)">Next →</button>
+ <button id="overviewBtn" type="button" class="btn-accent" title="Daftar Semua Slide untuk Sesi Q&A (Tekan G)">⊞ Slides</button>
+ <button id="modeToggleBtn" type="button" title="Ganti Mode Transisi (Zoom Cepat vs 3D Flip)">⚡ Mode Zoom</button>
+ <button id="cleanToggleBtn" type="button" title="Sembunyikan Bilah Menu & Kontrol (Tekan H)">👁 Bersih</button>
+ <button id="fullscreenBtn" type="button" aria-label="Layar penuh (F11)">⛶ Layar Penuh</button>
+</div>
+
+<!-- FLOATING PILL FOR RESTORING UI IN CLEAN MODE -->
+<button class="clean-pill" id="restoreUiBtn" type="button" title="Tampilkan kembali kontrol">
+ <span>👁 Tampilkan Kontrol</span> <kbd>H</kbd>
+</button>
+
+<div class="album-progress"><span id="albumProgress"></span></div>
+
+<!-- SLIDE OVERVIEW MODAL (Q&A NAVIGATION) -->
+<div class="overview-modal" id="overviewModal" role="dialog" aria-modal="true" aria-label="Daftar Semua Slide">
+ <div class="overview-inner">
+  <div class="overview-header">
+   <div class="overview-title">
+    <span>⊞</span> Navigasi Cepat Slide · Sesi Tanya Jawab (Q&A)
+   </div>
+   <button class="overview-close" id="closeOverview" type="button">✕ Tutup (Esc)</button>
+  </div>
+  <div class="overview-grid" id="overviewGrid">
+   <!-- Populated via JavaScript -->
+  </div>
+ </div>
+</div>
+
+<!-- KEYBOARD SHORTCUTS HELP MODAL -->
+<div class="help-modal" id="helpModal" role="dialog" aria-modal="true" aria-label="Daftar Tombol Pintas">
+ <div class="help-inner">
+  <div class="overview-header">
+   <div class="overview-title">⌨️ Panduan Tombol Presenter</div>
+   <button class="overview-close" id="closeHelp" type="button">✕ Tutup</button>
+  </div>
+  <div class="shortcut-list">
+   <div class="shortcut-item"><span>Slide Berikutnya</span> <span><kbd>→</kbd> atau <kbd>Space</kbd> atau <kbd>PgDn</kbd></span></div>
+   <div class="shortcut-item"><span>Slide Sebelumnya</span> <span><kbd>←</kbd> atau <kbd>PgUp</kbd></span></div>
+   <div class="shortcut-item"><span>Daftar Semua Slide (Q&A)</span> <span><kbd>G</kbd> atau <kbd>O</kbd></span></div>
+   <div class="shortcut-item"><span>Mode Layar Bersih (Hide UI)</span> <span><kbd>H</kbd></span></div>
+   <div class="shortcut-item"><span>Ganti Mode Transisi (Zoom / 3D)</span> <span><kbd>T</kbd></span></div>
+   <div class="shortcut-item"><span>Layar Penuh (Full Screen)</span> <span><kbd>F</kbd> atau <kbd>F11</kbd></span></div>
+   <div class="shortcut-item"><span>Slide Pertama / Terakhir</span> <span><kbd>Home</kbd> / <kbd>End</kbd></span></div>
+   <div class="shortcut-item"><span>Tutup Jendela / Lightbox</span> <span><kbd>Esc</kbd></span></div>
+  </div>
+ </div>
+</div>
+
+<!-- LIGHTBOX MODAL -->
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Foto diperbesar">
+ <button id="closeLightbox" aria-label="Tutup foto">×</button>
+ <img id="lightboxImage" alt="Foto diperbesar">
+</div>
+
+<script>
+// SLIDE DEFINITIONS
+const slideData = [
+ { id: 'opening', num: '01', tag: 'Opening', title: 'From One Idea to Global Inspiration', sub: 'Novita Windaningrum, S.Pd.' },
+ { id: 'beginning', num: '02', tag: 'The Beginning', title: 'A Small Beginning', sub: 'Pelatihan EPUB Semarang' },
+ { id: 'discovery', num: '03', tag: 'Possibilities', title: 'Beyond a Digital Book', sub: 'Mengenal Namo Author' },
+ { id: 'firstwork', num: '04', tag: 'First Work', title: 'My First Masterpiece', sub: 'Timun Mas (Narrative Text)' },
+ { id: 'achievement', num: '05', tag: 'Recognition', title: 'First Place Award', sub: 'Juara 1 di Semarang' },
+ { id: 'sharing', num: '06', tag: 'Sharing Practice', title: 'Sharing What I Created', sub: 'In-House Training di Sekolah' },
+ { id: 'sikola', num: '07', tag: 'Masterclass', title: 'SIKOLA Masterclass', sub: 'Pengembangan 3 Karya Baru' },
+ { id: 'portfolio', num: '08', tag: 'Portfolio', title: 'Four Works, One Journey', sub: 'Koleksi 4 Buku EPUB' },
+ { id: 'korea', num: '09', tag: 'Study Visit', title: 'A Journey to South Korea', sub: 'Kunjungan 25-31 Oktober 2026' },
+ { id: 'learning', num: '10', tag: 'Perspectives', title: 'Learning Beyond Borders', sub: 'Ulsan & Nammok School' },
+ { id: 'reflection', num: '11', tag: 'Takeaways', title: 'What I Bring Back', sub: '4 Pilar Inspirasi Guru' },
+ { id: 'demo', num: '12', tag: 'Interactive', title: 'From Story to Experience', sub: 'Fire Rescue Mission (Interactive EPUB)' },
+ { id: 'closing', num: '13', tag: 'Closing', title: 'Every Teacher Can Create', sub: 'Penutup & Inspirasi' }
+];
+
+const pages = [...document.querySelectorAll('#albumBook > section')];
+const book = document.getElementById('albumBook');
+const prevBtn = document.getElementById('prevPage');
+const nextPageBtn = document.getElementById('nextPage');
+const counter = document.getElementById('albumCounter');
+const progress = document.getElementById('albumProgress');
+const menu = document.getElementById('menu');
+const menuToggle = document.getElementById('menuToggle');
+const links = [...document.querySelectorAll('.menu a')];
+const overviewModal = document.getElementById('overviewModal');
+const overviewGrid = document.getElementById('overviewGrid');
+const helpModal = document.getElementById('helpModal');
+const modeToggleBtn = document.getElementById('modeToggleBtn');
+const cleanToggleBtn = document.getElementById('cleanToggleBtn');
+const restoreUiBtn = document.getElementById('restoreUiBtn');
+const fullscreenBtn = document.getElementById('fullscreenBtn');
+
+let current = 0;
+let busy = false;
+let transitionMode = 'webinar';
+const pad = n => String(n).padStart(2, '0');
+
+function initOverviewGrid() {
+ overviewGrid.innerHTML = '';
+ slideData.forEach((item, idx) => {
+  const card = document.createElement('div');
+  card.className = 'overview-card' + (idx === current ? ' active-card' : '');
+  card.innerHTML = `
+   <div class="card-num">${item.num} · ${item.tag}</div>
+   <strong>${item.title}</strong>
+   <span>${item.sub}</span>
+  `;
+  card.addEventListener('click', () => {
+   closeOverviewModal();
+   goToPage(idx);
+  });
+  overviewGrid.appendChild(card);
+ });
+}
+
+function showPage(index, direction = 'next') {
+ if (busy || index < 0 || index >= pages.length || index === current) return;
+ busy = true;
+ const oldPage = pages[current];
+ const newPage = pages[index];
+
+ if (transitionMode === 'webinar') {
+  oldPage.classList.remove('active');
+  oldPage.classList.add(direction === 'next' ? 'exit-left' : 'exit-right');
+  
+  newPage.classList.remove('exit-left', 'exit-right');
+  newPage.classList.add('active');
+  newPage.scrollTop = 0;
+
+  setTimeout(() => {
+   oldPage.classList.remove('exit-left', 'exit-right');
+   current = index;
+   updateUI();
+   busy = false;
+  }, 260);
+
+ } else {
+  newPage.classList.add('under');
+  oldPage.classList.add(direction === 'next' ? 'turning-next' : 'turning-prev');
+  oldPage.classList.remove('active');
+
+  setTimeout(() => {
+   oldPage.classList.remove('turning-next', 'turning-prev', 'under', 'active');
+   newPage.classList.remove('under');
+   newPage.classList.add('active');
+   newPage.scrollTop = 0;
+   current = index;
+   updateUI();
+   busy = false;
+  }, 740);
+ }
+}
+
+function goToPage(index) {
+ if (index === current) return;
+ showPage(index, index > current ? 'next' : 'prev');
+}
+
+function updateUI() {
+ prevBtn.disabled = current === 0;
+ nextPageBtn.disabled = current === pages.length - 1;
+ counter.textContent = pad(current + 1) + ' / ' + pad(pages.length);
+ progress.style.width = (((current + 1) / pages.length) * 100) + '%';
+ 
+ const currentId = pages[current].id;
+ links.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + currentId));
+ 
+ document.querySelectorAll('.overview-card').forEach((card, idx) => {
+  card.classList.toggle('active-card', idx === current);
+ });
+
+ document.getElementById('albumHint').textContent = current === 0
+  ? 'Klik "Buka Presentasi" atau panah kanan untuk memulai'
+  : current === pages.length - 1
+  ? 'Halaman Penutup · Tekan [G] untuk membuka daftar slide Q&A'
+  : `Slide ${pad(current + 1)}: ${slideData[current]?.title || ''} · Gunakan panah kanan/kiri`;
+}
+
+prevBtn.addEventListener('click', () => showPage(current - 1, 'prev'));
+nextPageBtn.addEventListener('click', () => showPage(current + 1, 'next'));
+
+links.forEach(a => a.addEventListener('click', e => {
+ e.preventDefault();
+ const targetId = a.getAttribute('href').replace('#', '');
+ const idx = pages.findIndex(s => s.id === targetId);
+ if (idx >= 0) {
+  goToPage(idx);
+  menu.classList.remove('open');
+ }
+}));
+
+menuToggle.addEventListener('click', () => menu.classList.toggle('open'));
+
+document.querySelectorAll('[data-next-page]').forEach(a => a.addEventListener('click', e => {
+ e.preventDefault();
+ showPage(current + 1, 'next');
+}));
+
+function toggleTransitionMode() {
+ if (transitionMode === 'webinar') {
+  transitionMode = 'flip';
+  book.classList.remove('mode-webinar');
+  book.classList.add('mode-flip');
+  modeToggleBtn.textContent = '📖 Mode Flip 3D';
+  modeToggleBtn.title = 'Beralih ke Mode Zoom (Transisi Cepat)';
+ } else {
+  transitionMode = 'webinar';
+  book.classList.remove('mode-flip');
+  book.classList.add('mode-webinar');
+  modeToggleBtn.textContent = '⚡ Mode Zoom';
+  modeToggleBtn.title = 'Beralih ke Mode 3D Flip Book';
+ }
+}
+modeToggleBtn.addEventListener('click', toggleTransitionMode);
+
+function toggleCleanMode() {
+ document.body.classList.toggle('clean-mode');
+ cleanToggleBtn.textContent = document.body.classList.contains('clean-mode') ? '👁 Tampil' : '👁 Bersih';
+}
+cleanToggleBtn.addEventListener('click', toggleCleanMode);
+restoreUiBtn.addEventListener('click', toggleCleanMode);
+
+function openOverviewModal() {
+ initOverviewGrid();
+ overviewModal.classList.add('open');
+}
+function closeOverviewModal() {
+ overviewModal.classList.remove('open');
+}
+document.getElementById('overviewBtn').addEventListener('click', openOverviewModal);
+document.getElementById('openOverviewTop').addEventListener('click', openOverviewModal);
+document.getElementById('closeOverview').addEventListener('click', closeOverviewModal);
+overviewModal.addEventListener('click', e => {
+ if (e.target === overviewModal) closeOverviewModal();
+});
+
+function openHelpModal() { helpModal.classList.add('open'); }
+function closeHelpModal() { helpModal.classList.remove('open'); }
+document.getElementById('helpBtn').addEventListener('click', openHelpModal);
+document.getElementById('closeHelp').addEventListener('click', closeHelpModal);
+helpModal.addEventListener('click', e => {
+ if (e.target === helpModal) closeHelpModal();
+});
+
+// Lightbox
+const lightbox = document.getElementById('lightbox');
+const lightImg = document.getElementById('lightboxImage');
+function openImage(src, alt) {
+ lightImg.src = src;
+ lightImg.alt = alt || 'Foto diperbesar';
+ lightbox.classList.add('open');
+}
+function closeImage() {
+ lightbox.classList.remove('open');
+ lightImg.src = '';
+}
+document.querySelectorAll('[data-zoom], [data-cover]').forEach(el => el.addEventListener('click', () => {
+ const img = el.matches('img') ? el : el.querySelector('img');
+ if (img) openImage(img.src, img.alt);
+}));
+document.getElementById('closeLightbox').addEventListener('click', closeImage);
+lightbox.addEventListener('click', e => { if (e.target === lightbox) closeImage(); });
+
+// Keyboard Controls
+document.addEventListener('keydown', e => {
+ if (lightbox.classList.contains('open')) {
+  if (e.key === 'Escape') closeImage();
+  return;
+ }
+ if (overviewModal.classList.contains('open')) {
+  if (e.key === 'Escape') closeOverviewModal();
+  return;
+ }
+ if (helpModal.classList.contains('open')) {
+  if (e.key === 'Escape') closeHelpModal();
+  return;
+ }
+
+ if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.code === 'Space') {
+  e.preventDefault();
+  showPage(current + 1, 'next');
+ } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+  e.preventDefault();
+  showPage(current - 1, 'prev');
+ } else if (e.key === 'Home') {
+  e.preventDefault();
+  goToPage(0);
+ } else if (e.key === 'End') {
+  e.preventDefault();
+  goToPage(pages.length - 1);
+ } else if (e.key === 'g' || e.key === 'G' || e.key === 'o' || e.key === 'O') {
+  e.preventDefault();
+  openOverviewModal();
+ } else if (e.key === 'h' || e.key === 'H') {
+  e.preventDefault();
+  toggleCleanMode();
+ } else if (e.key === 't' || e.key === 'T') {
+  e.preventDefault();
+  toggleTransitionMode();
+ } else if (e.key === 'f' || e.key === 'F') {
+  e.preventDefault();
+  toggleFullscreen();
+ } else if (e.key === '?' || e.key === '/') {
+  e.preventDefault();
+  openHelpModal();
+ }
+});
+
+// Touch / Swipe
+let touchX = 0;
+book.addEventListener('touchstart', e => { touchX = e.changedTouches[0].screenX; }, { passive: true });
+book.addEventListener('touchend', e => {
+ const dx = e.changedTouches[0].screenX - touchX;
+ if (Math.abs(dx) > 60) {
+  showPage(current + (dx < 0 ? 1 : -1), dx < 0 ? 'next' : 'prev');
+ }
+}, { passive: true });
+
+// Fullscreen
+async function toggleFullscreen() {
+ try {
+  if (!document.fullscreenElement) {
+   if (document.documentElement.requestFullscreen) await document.documentElement.requestFullscreen();
+  } else if (document.exitFullscreen) {
+   await document.exitFullscreen();
+  }
+ } catch (err) {
+  document.getElementById('albumHint').textContent = 'Gunakan tombol F11 untuk layar penuh di peramban ini.';
+ }
+ syncFullscreenButton();
+}
+function syncFullscreenButton() {
+ const isFull = !!document.fullscreenElement;
+ fullscreenBtn.textContent = isFull ? '⛶ Keluar Layar Penuh' : '⛶ Layar Penuh';
+}
+fullscreenBtn.addEventListener('click', toggleFullscreen);
+document.addEventListener('fullscreenchange', syncFullscreenButton);
+
+initOverviewGrid();
+updateUI();
+syncFullscreenButton();
+</script>
+
+</body>
+</html>
